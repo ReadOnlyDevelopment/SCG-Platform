@@ -1,0 +1,63 @@
+plugins {
+	id 'java'
+	id 'eclipse'
+	id 'application'
+}
+
+group = 'io.github.romvoid95'
+
+repositories {
+	mavenLocal()
+	maven {
+		url "https://jitpack.io"
+	}
+	mavenCentral()
+}
+
+dependencies {
+    implementation 'com.github.ReadOnlyDevelopment:JDATools:4.0.4'
+    implementation('net.dv8tion:JDA:5.0.0-beta.10') {
+        exclude module: 'opus-java'
+    }
+	implementation 'org.quartz-scheduler:quartz:2.2.1'
+	implementation 'org.slf4j:slf4j-api:2.0.7'
+	implementation 'ch.qos.logback:logback-classic:1.4.7'
+    implementation 'com.github.ROMVoid95:EliteDangerousAPI:2.1.0'
+    implementation 'com.rethinkdb:rethinkdb-driver:2.4.4'
+    implementation 'io.github.cdimascio:dotenv-java:3.0.0'
+	implementation 'com.squareup.okhttp3:okhttp:4.11.0'
+	implementation 'com.google.code.gson:gson:2.10.1'
+	implementation 'com.beust:jcommander:1.82'
+    implementation 'com.intellisrc:spark-core:2.9.4-unofficial-4'
+    implementation group: 'org.zeromq', name: 'jeromq', version: '0.4.0'
+	
+	compileOnly 'org.projectlombok:lombok:1.18.28'
+	annotationProcessor 'org.projectlombok:lombok:1.18.28'
+	testCompileOnly 'org.projectlombok:lombok:1.18.28'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.28'
+}
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	options.encoding = 'UTF-8'
+}
+
+jar {
+	manifest {
+		attributes 'Main-Class': 'io.github.romvoid95.scgbot.SCG',
+				   'Implementation-Version': project.version
+	}
+}
+
+application {
+    mainClass = 'io.github.romvoid95.scgbot.SCG'
+    
+    run {
+        args '-t', project.DISCORD_TOKEN
+    }
+}
